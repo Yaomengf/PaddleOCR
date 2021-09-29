@@ -168,7 +168,8 @@ MODEL_URLS = {
     }
 }
 
-
+import time
+t = time.time()
 def parse_args(mMain=True):
     import argparse
     parser = init_args()
@@ -189,8 +190,8 @@ def parse_args(mMain=True):
         for action in parser._actions:
             inference_args_dict[action.dest] = action.default
         return argparse.Namespace(**inference_args_dict)
-
-
+print(time.time()-t)
+s = time.time()
 def parse_lang(lang):
     latin_lang = [
         'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga', 'hr',
@@ -225,8 +226,8 @@ def parse_lang(lang):
     else:
         det_lang = "en"
     return lang, det_lang
-
-
+print(time.time()-s)
+d = time.time()
 def get_model_config(version, model_type, lang):
     if version not in MODEL_URLS:
         logger.warning('version {} not in {}, use version {} instead'.format(
@@ -254,8 +255,8 @@ def get_model_config(version, model_type, lang):
                 ), model_type))
             sys.exit(-1)
     return MODEL_URLS[version][model_type][lang]
-
-
+print(time.time()-d)
+f = time.time()
 class PaddleOCR(predict_system.TextSystem):
     def __init__(self, **kwargs):
         """
@@ -356,8 +357,8 @@ class PaddleOCR(predict_system.TextSystem):
                     return cls_res
             rec_res, elapse = self.text_recognizer(img)
             return rec_res
-
-
+print(time.time()-f)
+g = time.time()
 class PPStructure(OCRSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
@@ -417,8 +418,8 @@ class PPStructure(OCRSystem):
 
         res = super().__call__(img)
         return res
-
-
+print(time.time()-g)
+h = time.time()
 def main():
     # for cmd
     args = parse_args(mMain=True)
@@ -456,3 +457,4 @@ def main():
             for item in result:
                 item.pop('img')
                 logger.info(item)
+print(time.time()-h)
